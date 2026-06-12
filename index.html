@@ -1277,6 +1277,8 @@ class="card reveal">
 
 <h2>ルール</h2>
 
+<div class="rules-scroll">
+
 <ul class="rules-list">
 
 <li>チート禁止</li>
@@ -1291,7 +1293,17 @@ class="card reveal">
 
 <li>クロスプレイ可</li>
 
+<li>不具合利用禁止</li>
+
+<li>チーミング禁止</li>
+
+<li>配信遅延推奨</li>
+
+<li>その他運営判断を優先</li>
+
 </ul>
+
+</div>
 
 </section>
 
@@ -1313,6 +1325,43 @@ allowfullscreen>
 </div>
 
 </section>
+
+.rules-scroll{
+
+max-height:350px;
+
+overflow-y:auto;
+
+padding-right:10px;
+
+}
+
+/* スクロールバー */
+
+.rules-scroll::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+.rules-scroll::-webkit-scrollbar-track{
+
+background:rgba(255,255,255,.05);
+
+border-radius:10px;
+
+}
+
+.rules-scroll::-webkit-scrollbar-thumb{
+
+background:#9d4edd;
+
+border-radius:10px;
+
+box-shadow:
+0 0 10px #9d4edd;
+
+}
 
 <!-- FOOTER -->
 
