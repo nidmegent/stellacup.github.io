@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>STELLA CUP | Apex Legends Tournament</title>
+
+<meta name="theme-color" content="#9d4edd">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:
+"Segoe UI",
+sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:#050816;
+color:white;
+overflow-x:hidden;
+}
+
+/* ===================
+LOADING
+=================== */
+
+#loader{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:#050816;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:99999;
+
+}
+
+.loader-logo{
+
+width:160px;
+
+animation:
+loaderFloat 2s ease-in-out infinite;
+
+}
+
+.progress-box{
+
+width:320px;
+
+height:12px;
+
+background:#111;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin:20px 0;
+
+}
+
+.progress-bar{
+
+width:0%;
+
+height:100%;
+
+background:#9d4edd;
+
+box-shadow:
+0 0 20px #9d4edd,
+0 0 40px #9d4edd;
+
+}
+
+#percent{
+
+font-size:24px;
+
+font-weight:bold;
+
+}
+
+/* ===================
+STARS
+=================== */
+
+#stars{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+z-index:-3;
+
+background:
+radial-gradient(
+white 1px,
+transparent 1px);
+
+background-size:
+50px 50px;
+
+opacity:.2;
+
+}
+
+/* ===================
+GRID
+=================== */
+
+.grid-bg{
+
+position:fixed;
+
+bottom:-10%;
+
+left:0;
+
+width:100%;
+
+height:60%;
+
+pointer-events:none;
+
+z-index:-2;
+
+background-image:
+
+linear-gradient(
+rgba(157,78,221,.3) 1px,
+transparent 1px
+),
+
+linear-gradient(
+90deg,
+rgba(157,78,221,.3) 1px,
+transparent 1px
+);
+
+background-size:
+80px 80px;
+
+transform:
+perspective(700px)
+rotateX(75deg);
+
+transform-origin:bottom;
+
+opacity:.35;
+
+animation:
+gridMove 20s linear infinite;
+
+}
+
+/* ===================
+SHOOTING STARS
+=================== */
+
+.shooting-stars{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+pointer-events:none;
+
+overflow:hidden;
+
+z-index:-1;
+
+}
+
+.shooting-stars span{
+
+position:absolute;
+
+top:-10%;
+
+width:3px;
+
+height:120px;
+
+background:
+
+linear-gradient(
+to bottom,
+rgba(255,255,255,.9),
+transparent
+);
+
+animation:
+shoot 6s linear infinite;
+
+}
+
+.shooting-stars span:nth-child(1){
+
+left:10%;
+
+animation-delay:0s;
+
+}
+
+.shooting-stars span:nth-child(2){
+
+left:30%;
+
+animation-delay:2s;
+
+}
+
+.shooting-stars span:nth-child(3){
+
+left:55%;
+
+animation-delay:4s;
+
+}
+
+.shooting-stars span:nth-child(4){
+
+left:75%;
+
+animation-delay:1s;
+
+}
+
+.shooting-stars span:nth-child(5){
+
+left:90%;
+
+animation-delay:3s;
+
+}
+
+/* ===================
+HEADER
+=================== */
+
+header{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+padding:20px 50px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+background:
+rgba(0,0,0,.2);
+
+backdrop-filter:
+blur(15px);
+
+z-index:1000;
+
+border-bottom:
+1px solid rgba(255,255,255,.05);
+
+}
+
+.header-logo{
+
+width:70px;
+
+transition:.3s;
+
+}
+
+.header-logo:hover{
+
+transform:scale(1.1);
+
+}
+
+nav{
+
+display:flex;
+
+gap:25px;
+
+}
+
+nav a{
+
+color:white;
+
+text-decoration:none;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+nav a:hover{
+
+color:#c77dff;
+
+}
+
+/* ===================
+HERO
+=================== */
+
+.hero{
+
+position:relative;
+
+min-height:100vh;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+text-align:center;
+
+padding:120px 20px 50px;
+
+overflow:hidden;
+
+}
+
+.hero-glow{
+
+position:absolute;
+
+width:700px;
+height:700px;
+
+border-radius:50%;
+
+background:
+radial-gradient(
+circle,
+rgba(157,78,221,.35),
+transparent 70%
+);
+
+filter:blur(60px);
+
+z-index:-1;
+
+animation:
+pulseGlow 6s ease infinite;
+
+}
+
+.hero-logo{
+
+width:min(1000px,90vw);
+
+opacity:0;
+
+transform:scale(.7);
+
+animation:
+heroZoom 2s ease forwards,
+floatLogo 6s ease-in-out infinite 2s;
+
+filter:
+drop-shadow(0 0 15px #ffb347)
+drop-shadow(0 0 40px #ffb347);
+
+}
+
+.hero-subtitle{
+
+font-size:1.4rem;
+
+margin-top:20px;
+
+color:#ddd;
+
+letter-spacing:2px;
+
+}
+
+.hero-buttons{
+
+display:flex;
+
+gap:20px;
+
+justify-content:center;
+
+flex-wrap:wrap;
+
+margin-top:35px;
+
+}
+
+.btn{
+
+display:inline-block;
+
+padding:15px 35px;
+
+background:#9d4edd;
+
+color:white;
+
+text-decoration:none;
+
+font-weight:bold;
+
+border-radius:12px;
+
+box-shadow:
+0 0 20px #9d4edd;
+
+transition:.3s;
+
+}
+
+.btn:hover{
+
+transform:
+translateY(-3px);
+
+box-shadow:
+0 0 30px #9d4edd,
+0 0 60px #9d4edd;
+
+}
+
+.discord-btn{
+
+display:inline-block;
+
+padding:15px 35px;
+
+background:transparent;
+
+border:2px solid #5865F2;
+
+color:white;
+
+text-decoration:none;
+
+font-weight:bold;
+
+border-radius:12px;
+
+transition:.3s;
+
+box-shadow:
+0 0 15px rgba(88,101,242,.5);
+
+}
+
+.discord-btn:hover{
+
+transform:
+translateY(-3px);
+
+background:#5865F2;
+
+box-shadow:
+0 0 25px #5865F2,
+0 0 50px #5865F2;
+
+}
+
+/* ===================
+COUNTDOWN
+=================== */
+
+#countdown{
+
+display:flex;
+
+gap:15px;
+
+justify-content:center;
+
+flex-wrap:wrap;
+
+margin-top:40px;
+
+}
+
+#countdown div{
+
+min-width:120px;
+
+padding:18px;
+
+background:
+rgba(255,255,255,.05);
+
+border:
+1px solid rgba(255,255,255,.1);
+
+border-radius:15px;
+
+backdrop-filter:
+blur(10px);
+
+box-shadow:
+0 0 15px rgba(157,78,221,.4);
+
+}
+
+#countdown strong{
+
+display:block;
+
+font-size:2rem;
+
+color:#c77dff;
+
+}
+
+#countdown span{
+
+font-size:.9rem;
+
+color:#ccc;
+
+}
+
+/* ===================
+CARD
+=================== */
+
+.card{
+
+max-width:1200px;
+
+margin:80px auto;
+
+padding:40px;
+
+background:
+rgba(255,255,255,.04);
+
+backdrop-filter:
+blur(10px);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:20px;
+
+}
+
+.card h2{
+
+font-size:2rem;
+
+margin-bottom:25px;
+
+color:#c77dff;
+
+text-align:center;
+
+}
+
+/* ===================
+DEADLINE
+=================== */
+
+.deadline{
+
+text-align:center;
+
+}
+
+#deadline{
+
+font-size:1.5rem;
+
+font-weight:bold;
+
+}
+
+#deadline strong{
+
+color:#ffb347;
+
+font-size:2rem;
+
+}
+
+/* ===================
+ABOUT
+=================== */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:25px;
+
+margin-top:30px;
+
+}
+
+.grid div{
+
+padding:25px;
+
+background:
+rgba(255,255,255,.03);
+
+border-radius:15px;
+
+text-align:center;
+
+}
+
+.grid h3{
+
+margin-bottom:10px;
+
+color:#ffb347;
+
+}
+
+.grid p{
+
+color:#ddd;
+
+}
+
+/* ===================
+SCHEDULE
+=================== */
+
+.schedule-list{
+
+list-style:none;
+
+max-width:700px;
+
+margin:0 auto;
+
+}
+
+.schedule-list li{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px 25px;
+
+margin-bottom:12px;
+
+background:
+rgba(255,255,255,.03);
+
+border-radius:12px;
+
+border-left:
+4px solid #9d4edd;
+
+}
+
+.schedule-time{
+
+font-weight:bold;
+
+color:#ffb347;
+
+}
+
+/* ===================
+RULES
+=================== */
+
+.rules-list{
+
+list-style:none;
+
+max-width:800px;
+
+margin:0 auto;
+
+}
+
+.rules-list li{
+
+padding:15px 20px;
+
+margin-bottom:10px;
+
+background:
+rgba(255,255,255,.03);
+
+border-radius:12px;
+
+}
+
+/* ===================
+TWITCH
+=================== */
+
+.stream-box{
+
+overflow:hidden;
+
+border-radius:20px;
+
+box-shadow:
+0 0 30px rgba(157,78,221,.3);
+
+}
+
+.stream-box iframe{
+
+width:100%;
+
+height:650px;
+
+border:none;
+
+}
+
+/* ===================
+FOOTER
+=================== */
+
+footer{
+
+padding:80px 20px;
+
+text-align:center;
+
+border-top:
+1px solid rgba(255,255,255,.08);
+
+margin-top:100px;
+
+}
+
+.footer-logo{
+
+width:80px;
+
+margin-bottom:20px;
+
+opacity:.8;
+
+}
+
+footer p{
+
+color:#999;
+
+}
+
+/* ===================
+REVEAL
+=================== */
+
+.reveal{
+
+opacity:0;
+
+transform:
+translateY(50px);
+
+transition:
+all 1s ease;
+
+}
+
+.reveal.active{
+
+opacity:1;
+
+transform:none;
+
+}
+
+/* ===================
+ANIMATION
+=================== */
+
+@keyframes heroZoom{
+
+0%{
+
+opacity:0;
+
+transform:
+scale(.7);
+
+}
+
+100%{
+
+opacity:1;
+
+transform:
+scale(1);
+
+}
+
+}
+
+@keyframes floatLogo{
+
+0%,100%{
+
+transform:
+translateY(0);
+
+}
+
+50%{
+
+transform:
+translateY(-15px);
+
+}
+
+}
+
+@keyframes pulseGlow{
+
+0%,100%{
+
+transform:
+scale(1);
+
+}
+
+50%{
+
+transform:
+scale(1.15);
+
+}
+
+}
+
+@keyframes gridMove{
+
+0%{
+
+background-position:
+0 0,
+0 0;
+
+}
+
+100%{
+
+background-position:
+0 200px,
+200px 0;
+
+}
+
+}
+
+@keyframes shoot{
+
+0%{
+
+transform:
+translate(0,0)
+rotate(45deg);
+
+opacity:0;
+
+}
+
+10%{
+
+opacity:1;
+
+}
+
+100%{
+
+transform:
+translate(1200px,1200px)
+rotate(45deg);
+
+opacity:0;
+
+}
+
+}
+
+@keyframes loaderFloat{
+
+0%,100%{
+
+transform:
+translateY(0);
+
+}
+
+50%{
+
+transform:
+translateY(-12px);
+
+}
+
+}
+
+/* ===================
+MOBILE
+=================== */
+
+@media(max-width:768px){
+
+header{
+
+padding:15px 20px;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+nav{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+.hero-subtitle{
+
+font-size:1rem;
+
+}
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+#countdown div{
+
+min-width:90px;
+
+}
+
+#countdown strong{
+
+font-size:1.4rem;
+
+}
+
+.stream-box iframe{
+
+height:350px;
+
+}
+
+.card{
+
+padding:25px;
+
+margin:50px 15px;
+
+}
+
+}
+
+/* ===== CSS END ===== */
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOADER -->
+
+<div id="loader">
+
+<img
+src="img/logo.png"
+class="loader-logo">
+
+<h2>
+Connecting to STELLA CUP...
+</h2>
+
+<div class="progress-box">
+
+<div
+class="progress-bar"
+id="progress">
+</div>
+
+</div>
+
+<p id="percent">
+0%
+</p>
+
+</div>
+
+<!-- BACKGROUND -->
+
+<div id="stars"></div>
+
+<div class="grid-bg"></div>
+
+<div class="shooting-stars">
+
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
+<!-- HEADER -->
+
+<header>
+
+<img
+src="img/logo.png"
+class="header-logo">
+
+<nav>
+
+<a href="#about">大会概要</a>
+
+<a href="#schedule">スケジュール</a>
+
+<a href="#rules">ルール</a>
+
+<a href="#stream">配信</a>
+
+</nav>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-glow"></div>
+
+<img
+src="img/stellacup-logo.png"
+class="hero-logo">
+
+<p class="hero-subtitle">
+
+戦場に輝く、ただ一つの星。
+
+</p>
+
+<div id="countdown"></div>
+
+<div class="hero-buttons">
+
+<a
+href="https://forms.gle/hpmheio44aQkABMr7"
+target="_blank"
+class="btn">
+
+エントリーする
+
+</a>
+
+<a
+href="https://discord.gg/EGaAAJ269Q"
+target="_blank"
+class="discord-btn">
+
+Discordに参加
+
+</a>
+
+</div>
+
+</section>
+
+<!-- DEADLINE -->
+
+<section class="deadline card reveal">
+
+<h2>エントリー締切</h2>
+
+<p id="deadline"></p>
+
+</section>
+
+<!-- ABOUT -->
+
+<section
+id="about"
+class="card reveal">
+
+<h2>大会概要</h2>
+
+<div class="grid">
+
+<div>
+
+<h3>ゲーム</h3>
+
+<p>Apex Legends</p>
+
+</div>
+
+<div>
+
+<h3>開催日</h3>
+
+<p>2026年7月19日 20:00～</p>
+
+</div>
+
+<div>
+
+<h3>主催</h3>
+
+<p>Nidmegent Esports</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SCHEDULE -->
+
+<section
+id="schedule"
+class="card reveal">
+
+<h2>スケジュール</h2>
+
+<ul class="schedule-list">
+
+<li>
+<span class="schedule-time">
+19:30
+</span>
+
+<span>
+受付開始
+</span>
+</li>
+
+<li>
+<span class="schedule-time">
+20:00
+</span>
+
+<span>
+開会式
+</span>
+</li>
+
+<li>
+<span class="schedule-time">
+20:15
+</span>
+
+<span>
+Match 1
+</span>
+</li>
+
+<li>
+<span class="schedule-time">
+20:45
+</span>
+
+<span>
+Match 2
+</span>
+</li>
+
+<li>
+<span class="schedule-time">
+21:15
+</span>
+
+<span>
+Match 3
+</span>
+</li>
+
+<li>
+<span class="schedule-time">
+21:45
+</span>
+
+<span>
+Match 4
+</span>
+</li>
+
+<li>
+<span class="schedule-time">
+22:15
+</span>
+
+<span>
+Match 5
+</span>
+</li>
+
+<li>
+<span class="schedule-time">
+23:00
+</span>
+
+<span>
+結果発表
+</span>
+</li>
+
+</ul>
+
+</section>
+
+<!-- RULES -->
+
+<section
+id="rules"
+class="card reveal">
+
+<h2>ルール</h2>
+
+<ul class="rules-list">
+
+<li>チート禁止</li>
+
+<li>コンバーター禁止</li>
+
+<li>暴言禁止</li>
+
+<li>ゴースティング禁止</li>
+
+<li>運営判断による失格あり</li>
+
+<li>クロスプレイ可</li>
+
+</ul>
+
+</section>
+
+<!-- STREAM -->
+
+<section
+id="stream"
+class="card reveal">
+
+<h2>公式配信</h2>
+
+<div class="stream-box">
+
+<iframe
+src="https://player.twitch.tv/?channel=nidmegent&parent=localhost"
+allowfullscreen>
+</iframe>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+<img
+src="img/logo.png"
+class="footer-logo">
+
+<p>
+
+© 2026 STELLA CUP
+
+<br>
+
+Hosted by Nidmegent Esports
+
+</p>
+
+</footer>
+
+<script>
+
+/* ===================
+LOADING
+=================== */
+
+let progress = 0;
+
+const interval = setInterval(() => {
+
+progress++;
+
+document.getElementById(
+"progress"
+).style.width =
+progress + "%";
+
+document.getElementById(
+"percent"
+).innerText =
+progress + "%";
+
+if(progress >= 100){
+
+clearInterval(interval);
+
+setTimeout(()=>{
+
+document.getElementById(
+"loader"
+).style.display =
+"none";
+
+},500);
+
+}
+
+},20);
+
+/* ===================
+COUNTDOWN
+=================== */
+
+const target =
+new Date(
+"2026-07-19T20:00:00"
+);
+
+function updateCountdown(){
+
+const now =
+new Date();
+
+const diff =
+target - now;
+
+if(diff <= 0){
+
+document.getElementById(
+"countdown"
+).innerHTML =
+"STELLA CUP 開催中";
+
+return;
+
+}
+
+const days =
+Math.floor(
+diff / 86400000
+);
+
+const hours =
+Math.floor(
+diff / 3600000
+) % 24;
+
+const minutes =
+Math.floor(
+diff / 60000
+) % 60;
+
+const seconds =
+Math.floor(
+diff / 1000
+) % 60;
+
+document.getElementById(
+"countdown"
+).innerHTML =
+`
+<div>
+<strong>${days}</strong>
+<span>日</span>
+</div>
+
+<div>
+<strong>${hours}</strong>
+<span>時間</span>
+</div>
+
+<div>
+<strong>${minutes}</strong>
+<span>分</span>
+</div>
+
+<div>
+<strong>${seconds}</strong>
+<span>秒</span>
+</div>
+`;
+
+}
+
+setInterval(
+updateCountdown,
+1000
+);
+
+updateCountdown();
+
+/* ===================
+DEADLINE
+=================== */
+
+const deadline =
+new Date(
+"2026-07-18T23:59:59"
+);
+
+function updateDeadline(){
+
+const now =
+new Date();
+
+const diff =
+deadline - now;
+
+const days =
+Math.floor(
+diff / 86400000
+);
+
+document.getElementById(
+"deadline"
+).innerHTML =
+`
+締切まであと
+<strong>${days}日</strong>
+`;
+
+}
+
+updateDeadline();
+
+/* ===================
+REVEAL
+=================== */
+
+const reveals =
+document.querySelectorAll(
+".reveal"
+);
+
+window.addEventListener(
+"scroll",
+()=>{
+
+reveals.forEach(el=>{
+
+const top =
+el.getBoundingClientRect().top;
+
+if(
+top <
+window.innerHeight - 100
+){
+
+el.classList.add(
+"active"
+);
+
+}
+
+});
+
+}
+);
+
+/* ===================
+PARALLAX
+=================== */
+
+window.addEventListener(
+"scroll",
+()=>{
+
+const hero =
+document.querySelector(
+".hero"
+);
+
+hero.style.backgroundPositionY =
+window.scrollY * 0.4 + "px";
+
+}
+);
+
+</script>
+
+</body>
+
+</html>
